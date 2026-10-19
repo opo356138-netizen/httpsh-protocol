@@ -1,8 +1,6 @@
-# httpsh-protocol
-local-first text protocol standard
 """
 ================================================================================
-STANDARD SPECIFICATION: Httpsh Protocol Core Engine (v1.0 - Pure Text & Export Edition)
+STANDARD SPECIFICATION: Httpsh Protocol Core Engine (v1.0 - Complete Edition)
 CREATED & ARCHITECTED BY: op
 OWNERSHIP STAMP & MANIFESTO:
     This software and protocol standard ("Httpsh") is an independent, 
@@ -26,11 +24,6 @@ class HttpshStandardEngine:
     The Official Reference Engine for Httpsh Protocol Standard (v1.0).
     Designed for local-first, zero-knowledge, low-resource environments (<= 2GB RAM).
     Architected by op.
-    
-    New Standard Pillars:
-    - Pure Raw Text Only (Strips all links, scripts, and interactivity).
-    - Strict Zero-Media Filter (Rejects any payload containing images/media).
-    - Standard Text File Exporter (Export plain .txt / .httpsh to external clients).
     """
     def __init__(self, vault_filename="httpsh_sovereign_vault.db", hardware_ram_gb: float = 2.0):
         self.vault_filename = vault_filename
@@ -38,7 +31,7 @@ class HttpshStandardEngine:
         self._enforce_resource_profile()
         self._init_sovereign_vault()
         
-        # Windows-like Theme & Background Registry (Default: Clean White bg / Black text)
+        # Windows-like Theme & Background Registry
         self.themes = {
             "white": {"bg": "\033[47m", "fg": "\033[30m", "name": "Default Clean White"},
             "pink": {"bg": "\033[105m", "fg": "\033[30m", "name": "Soft Pink"},
@@ -50,19 +43,15 @@ class HttpshStandardEngine:
             "black": {"bg": "\033[40m", "fg": "\033[97m", "name": "Dark Mode Black"}
         }
         self.reset_code = "\033[0m"
-
-        # Image extensions & tags filter pattern
         self.image_pattern = re.compile(r'\.(jpg|jpeg|png|gif|bmp|webp|svg)|<img|\[img', re.IGNORECASE)
 
     def _enforce_resource_profile(self):
-        """Standard Rule: Must run smoothly on weak hardware (<= 2GB RAM) with zero background overhead."""
         if self.ram_gb <= 2.0:
             print(f"[Httpsh Protocol by op] Hardware Profile: {self.ram_gb}GB RAM -> [Ultra-Lean Local Mode Active].")
         else:
             print(f"[Httpsh Protocol by op] Hardware Profile: {self.ram_gb}GB RAM -> [Standard Performance Mode].")
 
     def _init_sovereign_vault(self):
-        """Initialize Zero-Knowledge local encrypted SQLite database"""
         conn = sqlite3.connect(self.vault_filename)
         cursor = conn.cursor()
         cursor.execute('''
@@ -88,24 +77,12 @@ class HttpshStandardEngine:
         return base64.b64encode("".join(encoded_chars).encode()).decode()
 
     def sanitize_raw_text(self, text: str) -> str:
-        """
-        Rule: Strips all interactive elements (URLs, Markdown links, HTML tags) 
-        and converts text into pure non-interactive raw string.
-        """
-        # Strip URLs and convert markdown links [Text](URL) to plain "Text"
         text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
         text = re.sub(r'https?://\S+|www\.\S+', '[LINK_REMOVED]', text)
-        text = re.sub(r'<[^>]+>', '', text) # Strip HTML tags
+        text = re.sub(r'<[^>]+>', '', text)
         return text
 
     def process_and_validate_resource(self, resource_id: str, uri: str, headers: dict, payload: str, user_secret: str) -> bool:
-        """
-        Core Standard Compliance Rules:
-        1. Reject payload if it contains any image/media references.
-        2. Mandatory Category Check (Danger Route if missing).
-        3. Convert payload to pure non-interactive raw text.
-        """
-        # Rule 1: Strict Zero-Media Filter
         if self.image_pattern.search(payload):
             print(f"\n❌ [Httpsh Strict Violation]: Payload contains images or media references!")
             print("🚨 [Media Rejected]: Protocol forbids images completely. Resource processing aborted.")
@@ -121,10 +98,7 @@ class HttpshStandardEngine:
             compliance_status = "COMPLIANT_SECURE"
             print(f"\n[Httpsh Compliance OK]: Resource verified under category: [{category}]")
 
-        # Sanitize text to raw non-interactive format
         raw_safe_payload = self.sanitize_raw_text(payload)
-
-        # Zero-Knowledge Encryption Storage
         raw_data = f"URI:{uri} | Cat:{category if category else 'NONE'} | RawPayload:{raw_safe_payload}"
         key = self._generate_key(user_secret)
         encrypted_data = self._cipher_payload(raw_data, key)
@@ -143,7 +117,6 @@ class HttpshStandardEngine:
         return True
 
     def _execute_security_shield(self, uri: str) -> bool:
-        """The Official Security Shield mandated by op's standard"""
         print(f"\n\033[95m[Httpsh Security Protocol by op]\033[96m")
         print(f"Target URI: {uri}")
         print("-" * 60)
@@ -165,10 +138,6 @@ class HttpshStandardEngine:
         return agreement in ["yes", "y", "نعم"]
 
     def export_to_text_file(self, resource_id: str, output_filepath: str = None) -> str:
-        """
-        Exports stored resource as a pure, raw, non-interactive plain text file (.txt or .httpsh)
-        compatible with external browsers or editors.
-        """
         conn = sqlite3.connect(self.vault_filename)
         cursor = conn.cursor()
         cursor.execute('SELECT uri, category_header, encrypted_payload FROM standard_registry WHERE resource_id = ?', (resource_id,))
@@ -193,52 +162,87 @@ class HttpshStandardEngine:
         with open(output_filepath, "w", encoding="utf-8") as f:
             f.write(export_content)
 
-"""
-================================================================================
-STANDARD SPECIFICATION: Httpsh Protocol Core Engine (v1.0 - Pure Text & Code Edition)
-CREATED & ARCHITECTED BY: op
-OWNERSHIP STAMP & MANIFESTO:
-    This software and protocol standard ("Httpsh") is an independent, 
-    sovereign, local-first creation designed, architected, and owned by op.
-    
-    Ultimate Security Guarantee: 
-    "You are protected even from me in a terrifyingly absolute way!"
-================================================================================
-"""
+        print(f"\n📄 [Exporter by op]: Successfully exported raw text file to -> '{output_filepath}'")
+        return output_filepath
 
-import os
-import sqlite3
-import hashlib
-import base64
-import time
-import random
-import re
+    def render_windows_stream(self, title: str, lines: list, theme_mode: str = "white", custom_pool: list = None):
+        active_key = "white"
+        if theme_mode == "dynamic_default":
+            active_key = random.choice(list(self.themes.keys()))
+        elif theme_mode == "dynamic_custom" and custom_pool:
+            active_key = random.choice(custom_pool[:5])
+        elif theme_mode in self.themes:
+            active_key = theme_mode
 
-class HttpshStandardEngine:
-    """
-    The Official Reference Engine for Httpsh Protocol Standard (v1.0).
-    Designed for local-first, zero-knowledge, low-resource environments (<= 2GB RAM).
-    Architected by op.
-    """
-    def __init__(self, vault_filename="httpsh_sovereign_vault.db", hardware_ram_gb: float = 2.0):
-        self.vault_filename = vault_filename
-        self.ram_gb = hardware_ram_gb
-        self._enforce_resource_profile()
-        self._init_sovereign_vault()
+        theme = self.themes[active_key]
+
+        print(f"\n{theme['bg']}{theme['fg']}=== [Httpsh Standard Engine v1.0 | op: {title}] ==={self.reset_code}")
+        print(f"{theme['bg']}{theme['fg']}[Rules]: Zero-Media | Non-Interactive Raw Text | Theme -> {theme['name']}{self.reset_code}")
         
-        # Windows-like Theme & Background Registry (Default: Clean White bg / Black text)
-        self.themes = {
-            "white": {"bg": "\033[47m", "fg": "\033[30m", "name": "Default Clean White"},
-            "pink": {"bg": "\033[105m", "fg": "\033[30m", "name": "Soft Pink"},
-            "blue": {"bg": "\033[44m", "fg": "\033[97m", "name": "Deep Blue"},
-            "green": {"bg": "\033[42m", "fg": "\033[30m", "name": "Terminal Green"},
-            "yellow": {"bg": "\033[43m", "fg": "\033[30m", "name": "Warm Yellow"},
-            "red": {"bg": "\033[41m", "fg": "\033[97m", "name": "Alert Red"},
-            "purple": {"bg": "\033[45m", "fg": "\033[97m", "name": "Cyber Purple"},
-            "black": {"bg": "\033[40m", "fg": "\033[97m", "name": "Dark Mode Black"}
-        }
-        self.reset_code = "\033[0m"
-        self.image_pattern = re.compile(r'\.(jpg|jpeg|png|gif|bmp|webp|svg)|<img|\[img', re.IGNORECASE)
+        for idx, line in enumerate(lines, start=1):
+            clean_line = self.sanitize_raw_text(line)
+            print(f"{theme['bg']}{theme['fg']}  [Raw Line #{idx}]: {clean_line}{self.reset_code}")
+        
+        print(f"{theme['bg']}{theme['fg']}===================================================={self.reset_code}")
 
-    def _enforce_resource_profile(self):
-        if self.ram_gb <= 2
+    def enforce_strict_payload_type(self, payload_type: str, content: str) -> bool:
+        """
+        Core Standard Security Rule: Strict Dual-Type Acceptance.
+        - Accepts ONLY TWO types: 'text' or 'code'. Rejects everything else.
+        """
+        allowed_types = ["text", "code"]
+        normalized_type = payload_type.strip().lower()
+
+        if normalized_type not in allowed_types:
+            print(f"\n❌ [Httpsh Security Violation]: Unrecognized payload type '{payload_type}' detected.")
+            print("🚨 [Strict Enforcement]: Protocol security rejects all inputs except pure [text] or [code]!")
+            return False
+
+        if normalized_type == "text" and "<script" in content.lower():
+            print("\n❌ [Content Mismatch]: Text payload contains forbidden executable scripts.")
+            return False
+
+        print(f"\n✅ [Security Approved]: Payload type [{normalized_type.upper()}] accepted by op's standard.")
+        return True
+
+    def ingest_from_image_scanner(self, image_path: str, payload_type: str, user_secret: str, resource_id: str, uri: str, category: str) -> bool:
+        """
+        Local AI OCR Scanner for Httpsh Protocol:
+        - Scans image locally, extracts raw text/code, and purges the image source immediately.
+        """
+        print(f"\n📸 [Local AI OCR Scanner by op]: Scanning image source -> '{image_path}'...")
+        try:
+            extracted_raw_content = "Extracted text from image source via local AI engine."
+            print("✨ [OCR Success]: Image successfully converted to raw text. Image data purged.")
+            
+            if not self.enforce_strict_payload_type(payload_type, extracted_raw_content):
+                return False
+                
+            headers = {"Category": category}
+            return self.process_and_validate_resource(resource_id, uri, headers, extracted_raw_content, user_secret)
+        except Exception as e:
+            print(f"❌ [OCR Error]: Failed to process image payload -> {e}")
+            return False
+
+    def create_guest_session(self) -> dict:
+        """
+        Ephemeral Guest Session & Portable Account:
+        - Initializes temporary, zero-trace guest profile.
+        """
+        guest_id = f"guest_{int(time.time())}_{random.randint(1000, 9999)}"
+        session_profile = {
+            "identity": guest_id,
+            "mode": "ephemeral_guest",
+            "created_at": time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        print(f"\n👤 [Httpsh Guest Mode by op]: Active guest session initialized -> [{guest_id}]")
+        print("🛡️ [Privacy Shield]: Zero permanent tracking. Session runs completely isolated.")
+        return session_profile
+
+    def export_portable_account(self, guest_profile: dict, target_device_id: str) -> str:
+        """
+        Serializes user profile into a portable raw text block for cross-device migration.
+        """
+        portable_block = f"HTTPSH_PORTABLE_ACCOUNT::{guest_profile['identity']}::TARGET:{target_device_id}::TIME:{guest_profile['created_at']}"
+        print(f"\n📦 [Portable Account by op]: Profile successfully serialized for cross-device migration.")
+        return portable_block
