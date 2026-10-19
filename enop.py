@@ -234,13 +234,9 @@ class HttpshStandardEngine:
 if __name__ == "__main__":
     print("--- Httpsh Protocol Engine Initialized Successfully ---")
     
-    # إنشاء كائن من المحرك واختبار الميزات السيادية
     engine = HttpshStandardEngine()
-    
-    # عرض العلامة المائية السيادية والترحيب
     engine.render_sovereign_watermark()
     
-    # اختبار تدفق النص (Windows-like Stream Test)
     sample_lines = [
         "Welcome to the sovereign local-first revolution.",
         "Zero tracking, zero media, absolute text sovereignty.",
