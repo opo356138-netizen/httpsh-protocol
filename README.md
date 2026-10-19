@@ -1,6 +1,6 @@
 """
 ================================================================================
-STANDARD SPECIFICATION: Httpsh Protocol Core Engine (v1.0 - Complete Edition)
+STANDARD SPECIFICATION: Httpsh Protocol Core Engine (v1.0 - Ultimate Edition)
 CREATED & ARCHITECTED BY: op
 OWNERSHIP STAMP & MANIFESTO:
     This software and protocol standard ("Httpsh") is an independent, 
@@ -246,3 +246,14 @@ class HttpshStandardEngine:
         portable_block = f"HTTPSH_PORTABLE_ACCOUNT::{guest_profile['identity']}::TARGET:{target_device_id}::TIME:{guest_profile['created_at']}"
         print(f"\n📦 [Portable Account by op]: Profile successfully serialized for cross-device migration.")
         return portable_block
+
+    def render_sovereign_watermark(self):
+        """
+        Sovereign Watermark & Signature:
+        - Displays official creator credits and anti-ad/clean browsing appreciation.
+        """
+        watermark_text = "TOPFRA & Httpsh Standard: Designed & Architected by op. Special thanks for eliminating intrusive ads and securing pure text flow."
+        print(f"\n{self.themes['black']['bg']}{self.themes['black']['fg']}--- [SOVEREIGN SIGNATURE] ---{self.reset_code}")
+        print(f"{self.themes['black']['bg']}{self.themes['black']['fg']}  {watermark_text}{self.reset_code}")
+        print(f"{self.themes['black']['bg']}{self.themes['black']['fg']}----------------------------{self.reset_code}")
+        return watermark_text
