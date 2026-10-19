@@ -1,3 +1,9 @@
+# ==============================================================================
+#  PROJECT: Httpsh Protocol Engine (v1.0 Sovereign Edition)
+#  ARCHITECT: op
+#  LICENSE: GNU General Public License v3.0 (GPLv3)
+#  PURPOSE: Educational, Research & Sovereign Local-First Computing Only
+# ==============================================================================
 """
 ================================================================================
 STANDARD SPECIFICATION: Httpsh Protocol Core Engine (v1.1 - Sovereign Edition)
