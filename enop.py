@@ -228,4 +228,23 @@ class HttpshStandardEngine:
         print(f"{self.themes['black']['bg']}{self.themes['black']['fg']}  {watermark_text}{self.reset_code}")
         print(f"{self.themes['black']['bg']}{self.themes['black']['fg']}----------------------------{self.reset_code}")
         return watermark_text
-      
+      # ==============================================================================
+# Execution Entry Point (Sovereign Local-First Mode)
+# ==============================================================================
+if __name__ == "__main__":
+    print("--- Httpsh Protocol Engine Initialized Successfully ---")
+    
+    # إنشاء كائن من المحرك واختبار الميزات السيادية
+    engine = HttpshStandardEngine()
+    
+    # عرض العلامة المائية السيادية والترحيب
+    engine.render_sovereign_watermark()
+    
+    # اختبار تدفق النص (Windows-like Stream Test)
+    sample_lines = [
+        "Welcome to the sovereign local-first revolution.",
+        "Zero tracking, zero media, absolute text sovereignty.",
+        "Engineered by op for low-resource secure environments."
+    ]
+    engine.render_windows_stream("Test Node 01", sample_lines, theme_mode="green")
+    
